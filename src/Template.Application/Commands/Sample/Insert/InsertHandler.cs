@@ -14,7 +14,8 @@ using Template.Application.Services;
 
 namespace Template.Application.Commands.Sample.Insert
 {
-    public class InsertHandler : BaseRequestHandler<InsertRequest, Result>
+    public class
+        InsertHandler : BaseRequestHandler<InsertRequest, EntityResult<SampleDto>>
     {
         private readonly ISampleRepository _sampleRepository;
         private readonly ISampleService    _sampleService;
@@ -30,7 +31,7 @@ namespace Template.Application.Commands.Sample.Insert
             this._sampleService    = sampleService;
         }
 
-        public override async Task<Result> Handle(InsertRequest request,
+        public override async Task<EntityResult<SampleDto>> Handle(InsertRequest request,
             CancellationToken cancellationToken)
         {
             int calc =
@@ -49,7 +50,7 @@ namespace Template.Application.Commands.Sample.Insert
                     cancellationToken);
             }
 
-            return new Result(request.Notifications);
+            return new EntityResult<SampleDto>(request.Notifications, request.Item);
         }
     }
 }

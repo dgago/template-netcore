@@ -2,7 +2,7 @@ using Application.Models.Request;
 
 namespace Template.Application.Commands.Sample.Insert
 {
-    public class InsertRequest : CommandRequest
+    public class InsertRequest : EntityRequest<SampleDto>
     {
         public InsertRequest(SampleDto item)
         {
