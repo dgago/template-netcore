@@ -11,7 +11,7 @@ TODO: Guide users through getting your code up and running on their own system. 
 # Create a template with "dotnet new" command
 1. To add the project to the "dotnet new" command list, run the following command from the solution folder: “dotnet new -i .”
 2. Create a new folder where the project will be created.
-3. From this new folder, run the following command: "dotnet new SuperdigitalProject --projectName <value>".
+3. From this new folder, run the following command: "dotnet new Project --projectName <value>".
 
 # Build and Test
 TODO: Describe and show how to build your code and run the tests.
@@ -32,7 +32,7 @@ set ASPNETCORE_ENVIRONMENT=Local
 
 **Run EF Migration tool**
 ```
- dotnet ef migrations add <name> --project src\Super.GlobalPlatform.Template.Persistance --startup-project src\Super.GlobalPlatform.Template.API
+ dotnet ef migrations add <name> --project src\Template.Persistence --startup-project src\Template.API
 ```
 
 # Contribute
