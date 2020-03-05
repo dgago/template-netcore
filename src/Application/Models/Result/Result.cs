@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using FluentValidation.Results;
 
@@ -12,5 +13,14 @@ namespace Application.Models.Result
         }
 
         public IReadOnlyCollection<ValidationResult> Notifications { get; }
+
+        public bool IsValid
+        {
+            get
+            {
+                return this.Notifications.Count == 0
+                    || this.Notifications.All(x => x.IsValid);
+            }
+        }
     }
 }

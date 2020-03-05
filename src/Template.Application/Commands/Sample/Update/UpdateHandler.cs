@@ -7,8 +7,6 @@ using Application.Repositories;
 
 using Domain.Validation;
 
-using MediatR;
-
 using Template.Application.Adapters;
 using Template.Application.Repositories;
 
@@ -20,7 +18,7 @@ namespace Template.Application.Commands.Sample.Update
         private readonly ISampleRepository _sampleRepository;
         private readonly IUnitOfWork       _unitOfWork;
 
-        public UpdateHandler(IMediator eventPublisher,
+        public UpdateHandler(IEventPublisher eventPublisher,
             ISampleRepository sampleRepository,
             IUnitOfWork unitOfWork,
             ISampleAdapter sampleAdapter) : base(eventPublisher)
@@ -44,7 +42,8 @@ namespace Template.Application.Commands.Sample.Update
             string randomDesc = await this._sampleAdapter.GetRandomDescriptionAsync();
 
             // random desc should contain a non-empty string
-            request.AddNotifications(new NotEmptyValidator<string>().Validate(randomDesc));
+            request.AddNotifications(
+                new NotEmptyValidator<string>().Validate(randomDesc));
 
             string newDescription = $"{request.Description} {randomDesc}";
 

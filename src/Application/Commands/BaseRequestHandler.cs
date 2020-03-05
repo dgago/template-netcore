@@ -9,9 +9,9 @@ namespace Application.Commands
         BaseRequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        protected readonly IMediator EventPublisher;
+        protected readonly IEventPublisher EventPublisher;
 
-        protected BaseRequestHandler(IMediator eventPublisher)
+        protected BaseRequestHandler(IEventPublisher eventPublisher)
         {
             this.EventPublisher = eventPublisher;
         }

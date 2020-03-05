@@ -7,8 +7,6 @@ using Application.Repositories;
 
 using Domain.Validation;
 
-using MediatR;
-
 using Template.Application.Repositories;
 using Template.Application.Services;
 
@@ -21,7 +19,7 @@ namespace Template.Application.Commands.Sample.Insert
         private readonly ISampleService    _sampleService;
         private readonly IUnitOfWork       _unitOfWork;
 
-        public InsertHandler(IMediator eventPublisher,
+        public InsertHandler(IEventPublisher eventPublisher,
             ISampleRepository sampleRepository,
             IUnitOfWork unitOfWork,
             ISampleService sampleService) : base(eventPublisher)

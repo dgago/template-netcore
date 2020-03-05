@@ -7,8 +7,6 @@ using Application.Repositories;
 
 using Domain.Validation;
 
-using MediatR;
-
 using Template.Application.Repositories;
 
 namespace Template.Application.Commands.Sample.Delete
@@ -18,7 +16,7 @@ namespace Template.Application.Commands.Sample.Delete
         private readonly ISampleRepository _sampleRepository;
         private readonly IUnitOfWork       _unitOfWork;
 
-        public DeleteHandler(IMediator eventPublisher,
+        public DeleteHandler(IEventPublisher eventPublisher,
             ISampleRepository sampleRepository,
             IUnitOfWork unitOfWork) : base(eventPublisher)
         {
