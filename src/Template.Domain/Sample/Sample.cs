@@ -10,13 +10,13 @@ namespace Template.Domain.Sample
         public Sample(string id, string description)
         {
             // TODO: cómo validar acá? Ideas: tener un miembro público IsValid y una coleccion de Notif
-            this.Notifications.Add(new NotEmptyValidator<string>().Validate(id));
-            this.Notifications.Add(new DescriptionValidator().Validate(description));
+            Notifications.Add(new NotEmptyValidator<string>().Validate(id));
+            Notifications.Add(new DescriptionValidator().Validate(description));
 
-            if (this.IsValid)
+            if (IsValid)
             {
-                this.Id          = id;
-                this.Description = description;
+                Id          = id;
+                Description = description;
             }
         }
 
@@ -30,7 +30,7 @@ namespace Template.Domain.Sample
 
             if (res.IsValid)
             {
-                this.Description = description;
+                Description = description;
             }
 
             return res;

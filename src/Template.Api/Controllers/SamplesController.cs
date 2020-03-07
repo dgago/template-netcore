@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Application.Commands;
 using Application.Models.Result;
@@ -29,8 +28,8 @@ namespace Template.Api.Controllers
         public async Task<IActionResult> Get([FromQuery]string id, [FromQuery]string description)
         {
             QueryResult<SampleDto> result =
-                await this.EventPublisher.Send(new FindRequest(id, description, 1, 10));
-            return this.Presenter.GetListResult(this.Response, result);
+                await EventPublisher.Send(new FindRequest(id, description, 1, 10));
+            return Presenter.GetListResult(Response, result);
         }
 
         // GET api/values/5
@@ -38,8 +37,8 @@ namespace Template.Api.Controllers
         public async Task<IActionResult> Get(string id)
         {
             EntityResult<SampleDto> result =
-                await this.EventPublisher.Send(new GetByIdRequest(id)); 
-            return this.Presenter.GetOkObjectResult(result);
+                await EventPublisher.Send(new GetByIdRequest(id)); 
+            return Presenter.GetOkObjectResult(result);
         }
 
         // POST api/values
@@ -47,8 +46,8 @@ namespace Template.Api.Controllers
         public async Task<IActionResult> Post([FromBody] SampleDto item)
         {
             EntityResult<SampleDto> result =
-                await this.EventPublisher.Send(new InsertRequest(item));
-            return this.Presenter.GetCreatedResult(result);
+                await EventPublisher.Send(new InsertRequest(item));
+            return Presenter.GetCreatedResult(result);
         }
 
         // PUT api/values/5
@@ -56,8 +55,8 @@ namespace Template.Api.Controllers
         public async Task<IActionResult> Put(string id, [FromBody] SampleDto item)
         {
             Result result =
-                await this.EventPublisher.Send(new UpdateRequest(id, item.Description));
-            return this.Presenter.GetNoContentResult(result);
+                await EventPublisher.Send(new UpdateRequest(id, item.Description));
+            return Presenter.GetNoContentResult(result);
         }
 
         // DELETE api/values/5
@@ -65,8 +64,8 @@ namespace Template.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            Result result = await this.EventPublisher.Send(new DeleteRequest(id));
-            return this.Presenter.GetOkResult(result);
+            Result result = await EventPublisher.Send(new DeleteRequest(id));
+            return Presenter.GetOkResult(result);
         }
     }
 }

@@ -24,29 +24,36 @@ namespace Template.Application.Commands.Sample.Insert
             IUnitOfWork unitOfWork,
             ISampleService sampleService) : base(eventPublisher)
         {
-            this._sampleRepository = sampleRepository;
-            this._unitOfWork       = unitOfWork;
-            this._sampleService    = sampleService;
+            _sampleRepository = sampleRepository;
+            _unitOfWork       = unitOfWork;
+            _sampleService    = sampleService;
         }
 
         public override async Task<EntityResult<SampleDto>> Handle(InsertRequest request,
             CancellationToken cancellationToken)
         {
+            if (!request.IsValid)
+            {
+                return new EntityResult<SampleDto>(request.Notifications, request.Item);
+            }
+
             int calc =
-                await this._sampleService.CalculateSampleAsync(request.Item.ToEntity());
+                await _sampleService.CalculateSampleAsync(request.Item.ToEntity());
 
             // calc must be != 0
             request.AddNotifications(new NotEmptyValidator<int>().Validate(calc));
 
-            if (request.IsValid)
+            if (!request.IsValid)
             {
-                await this._sampleRepository.InsertAsync(request.Item.ToEntity());
-
-                await this._unitOfWork.SaveAsync();
-
-                await this.EventPublisher.Publish(new SampleInserted(request.Item),
-                    cancellationToken);
+                return new EntityResult<SampleDto>(request.Notifications, request.Item);
             }
+
+                await _sampleRepository.InsertAsync(request.Item.ToEntity());
+
+                await _unitOfWork.SaveAsync();
+
+                await EventPublisher.Publish(new SampleInserted(request.Item),
+                    cancellationToken);
 
             return new EntityResult<SampleDto>(request.Notifications, request.Item);
         }

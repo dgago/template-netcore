@@ -6,7 +6,7 @@ namespace Template.Application.Commands.Sample.Insert
     {
         public SampleInserted(SampleDto item)
         {
-            this.Item = item;
+            Item = item;
         }
 
         public SampleDto Item { get; set; }

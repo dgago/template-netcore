@@ -6,7 +6,7 @@ namespace Template.Application.Commands.Sample.Delete
     {
         public SampleDeleted(string id)
         {
-            this.Id = id;
+            Id = id;
         }
 
         public string Id { get; set; }

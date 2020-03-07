@@ -7,8 +7,8 @@ namespace Application.Models.Request
     {
         protected QueryRequest(uint pageIndex, uint pageSize)
         {
-            this.PageIndex = pageIndex;
-            this.PageSize = pageSize;
+            PageIndex = pageIndex;
+            PageSize = pageSize;
         }
 
         public uint PageIndex { get; set; }

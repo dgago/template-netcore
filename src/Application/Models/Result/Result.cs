@@ -9,7 +9,7 @@ namespace Application.Models.Result
     {
         public Result(IReadOnlyCollection<ValidationResult> notifications)
         {
-            this.Notifications = notifications;
+            Notifications = notifications;
         }
 
         public IReadOnlyCollection<ValidationResult> Notifications { get; }
@@ -18,8 +18,8 @@ namespace Application.Models.Result
         {
             get
             {
-                return this.Notifications.Count == 0
-                    || this.Notifications.All(x => x.IsValid);
+                return Notifications.Count == 0
+                    || Notifications.All(x => x.IsValid);
             }
         }
     }

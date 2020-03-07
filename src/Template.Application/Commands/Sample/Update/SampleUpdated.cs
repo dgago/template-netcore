@@ -6,8 +6,8 @@ namespace Template.Application.Commands.Sample.Update
     {
         public SampleUpdated(string id, string description)
         {
-            this.Id          = id;
-            this.Description = description;
+            Id          = id;
+            Description = description;
         }
 
         public string Description { get; set; }

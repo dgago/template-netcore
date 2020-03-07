@@ -7,7 +7,7 @@ namespace Domain.Validation
     {
         public NotNullValidator()
         {
-            this.RuleFor(x => x).NotNull();
+            RuleFor(x => x).NotNull();
         }
 
         protected override bool PreValidate(ValidationContext<T> context,
@@ -22,15 +22,5 @@ namespace Domain.Validation
 
             return true;
         }
-
-//        public override ValidationResult Validate(ValidationContext<T> context)
-//        {
-//            return context.InstanceToValidate == null
-//                ? new ValidationResult(new[]
-//                {
-//                    new ValidationFailure("Value", "Value cannot be null")
-//                })
-//                : base.Validate(context.InstanceToValidate);
-//        }
     }
 }

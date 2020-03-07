@@ -13,7 +13,7 @@ namespace Application.Commands
 
         protected BaseRequestHandler(IEventPublisher eventPublisher)
         {
-            this.EventPublisher = eventPublisher;
+            EventPublisher = eventPublisher;
         }
 
         public abstract Task<TResponse> Handle(TRequest request,

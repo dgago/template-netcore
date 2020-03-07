@@ -9,7 +9,7 @@ namespace Domain
     {
         protected Entity()
         {
-            this.Notifications = new List<ValidationResult>();
+            Notifications = new List<ValidationResult>();
         }
 
         public List<ValidationResult> Notifications { get; }
@@ -18,13 +18,13 @@ namespace Domain
         {
             get
             {
-                return this.Notifications.All(x => x.IsValid);
+                return Notifications.All(x => x.IsValid);
             }
         }
 
         public void AddNotifications(params ValidationResult[] items)
         {
-            this.Notifications.AddRange(items);
+            Notifications.AddRange(items);
         }
     }
 }

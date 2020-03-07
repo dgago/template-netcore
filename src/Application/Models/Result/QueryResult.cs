@@ -12,8 +12,8 @@ namespace Application.Models.Result
             long count) : base(
             notifications)
         {
-            this.Items = items;
-            this.Count = count;
+            Items = items;
+            Count = count;
         }
         
         public IEnumerable<T> Items { get; }

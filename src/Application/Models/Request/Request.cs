@@ -12,19 +12,19 @@ namespace Application.Models.Request
     {
         protected Request()
         {
-            this.Notifications = new List<ValidationResult>();
+            Notifications = new List<ValidationResult>();
         }
 
         public bool IsValid
         {
-            get { return this.Notifications.All(x => x.IsValid); }
+            get { return Notifications.All(x => x.IsValid); }
         }
 
         public List<ValidationResult> Notifications { get; }
 
         public void AddNotifications(params ValidationResult[] items)
         {
-            this.Notifications.AddRange(items);
+            Notifications.AddRange(items);
         }
     }
 }

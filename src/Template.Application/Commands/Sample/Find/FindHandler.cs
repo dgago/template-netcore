@@ -17,14 +17,14 @@ namespace Template.Application.Commands.Sample.Find
 
         public FindHandler(ISampleRepository sampleRepository)
         {
-            this._sampleRepository = sampleRepository;
+            _sampleRepository = sampleRepository;
         }
 
         public async Task<QueryResult<SampleDto>> Handle(FindRequest request,
             CancellationToken cancellationToken)
         {
             (IEnumerable<SampleDto> items, long count) =
-                await this._sampleRepository.FindAsync(request.Id, request.Description);
+                await _sampleRepository.FindAsync(request.Id, request.Description);
 
             return new QueryResult<SampleDto>(request.Notifications, items, count);
         }

@@ -7,7 +7,7 @@ namespace Template.Domain.Sample
     {
         public DescriptionValidator()
         {
-            this.RuleFor(x => x).NotEmpty().MaximumLength(250);
+            RuleFor(x => x).NotEmpty().MaximumLength(250);
         }
 
         protected override bool PreValidate(ValidationContext<string> context, ValidationResult result)
@@ -21,15 +21,5 @@ namespace Template.Domain.Sample
 
             return true;
         }
-
-//        public override ValidationResult Validate(ValidationContext<string> context)
-//        {
-//            return context.InstanceToValidate == null
-//                ? new ValidationResult(new[]
-//                {
-//                    new ValidationFailure("Value", "Value cannot be null")
-//                })
-//                : base.Validate(context.InstanceToValidate);
-//        }
     }
 }

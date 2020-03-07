@@ -11,8 +11,8 @@ namespace Template.Api.Controllers
 
         public ApiControllerBase(IEventPublisher eventPublisher, Presenter presenter)
         {
-            this.EventPublisher = eventPublisher;
-            this.Presenter      = presenter;
+            EventPublisher = eventPublisher;
+            Presenter      = presenter;
         }
     }
 }

@@ -7,8 +7,8 @@ namespace Template.Application.Commands.Sample.Find
         public FindRequest(string id, string description, uint pageIndex, uint pageSize) :
             base(pageIndex, pageSize)
         {
-            this.Id          = id;
-            this.Description = description;
+            Id          = id;
+            Description = description;
         }
 
         public string Id { get; }

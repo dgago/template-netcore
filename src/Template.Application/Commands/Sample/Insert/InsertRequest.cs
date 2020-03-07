@@ -6,9 +6,9 @@ namespace Template.Application.Commands.Sample.Insert
     {
         public InsertRequest(SampleDto item)
         {
-            this.Item = item;
+            Item = item;
 
-            this.AddNotifications(new InsertRequestValidator().Validate(this));
+            AddNotifications(new InsertRequestValidator().Validate(this));
         }
 
         public SampleDto Item { get; }

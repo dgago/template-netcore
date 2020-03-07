@@ -26,20 +26,20 @@ namespace Template.Api.Controllers
             string url = urlBuilder.ToString();
 
             return !result.IsValid
-                ? this.CreateErrorResult(result)
+                ? CreateErrorResult(result)
                 : new CreatedResult(url, result.Item);
         }
 
         public IActionResult GetOkResult(Result result)
         {
-            return !result.IsValid ? this.CreateErrorResult(result) : new OkResult();
+            return !result.IsValid ? CreateErrorResult(result) : new OkResult();
         }
 
         public IActionResult GetOkObjectResult<T>(EntityResult<T> result)
             where T : class
         {
             return !result.IsValid
-                ? this.CreateErrorResult(result)
+                ? CreateErrorResult(result)
                 : new OkObjectResult(result.Item);
         }
 
@@ -49,7 +49,7 @@ namespace Template.Api.Controllers
         {
             response.Headers.Add("x-count", result.Count.ToString());
             return !result.IsValid
-                ? this.CreateErrorResult(result)
+                ? CreateErrorResult(result)
                 : new OkObjectResult(result.Items);
         }
 
@@ -95,7 +95,7 @@ namespace Template.Api.Controllers
         public IActionResult GetNoContentResult(Result result)
         {
             return !result.IsValid
-                ? this.CreateErrorResult(result)
+                ? CreateErrorResult(result)
                 : new NoContentResult();
         }
     }

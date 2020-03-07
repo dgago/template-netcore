@@ -8,7 +8,7 @@
 
         public Domain.Sample.Sample ToEntity()
         {
-            return new Domain.Sample.Sample(this.Id, this.Description);
+            return new Domain.Sample.Sample(Id, Description);
         }
 
         public static SampleDto FromEntity(Domain.Sample.Sample item)

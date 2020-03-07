@@ -8,9 +8,9 @@ namespace Template.Application.Commands.Sample.Delete
     {
         public DeleteRequest(string id)
         {
-            this.Id = id;
+            Id = id;
 
-            this.AddNotifications(new NotEmptyValidator<string>().Validate(id));
+            AddNotifications(new NotEmptyValidator<string>().Validate(id));
         }
 
         public string Id { get; }

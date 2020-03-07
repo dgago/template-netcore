@@ -8,12 +8,12 @@ namespace Application.Commands
     {
         protected DomainEvent()
         {
-            this.CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTime.UtcNow;
         }
 
         public DomainEvent(DateTime createdAt)
         {
-            this.CreatedAt = createdAt;
+            CreatedAt = createdAt;
         }
 
         public DateTime CreatedAt { get; set; }

@@ -7,7 +7,7 @@ namespace Domain.Validation
     {
         public NotEmptyValidator()
         {
-            this.RuleFor(x => x)
+            RuleFor(x => x)
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .NotNull()
                 .NotEmpty();
@@ -25,15 +25,5 @@ namespace Domain.Validation
 
             return true;
         }
-
-//        public override ValidationResult Validate(ValidationContext<T> context)
-//        {
-//            return context.InstanceToValidate == null
-//                ? new ValidationResult(new[]
-//                {
-//                    new ValidationFailure("Value", "Value cannot be null")
-//                })
-//                : base.Validate(context.InstanceToValidate);
-//        }
     }
 }

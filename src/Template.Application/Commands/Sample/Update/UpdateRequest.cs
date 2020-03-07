@@ -6,10 +6,10 @@ namespace Template.Application.Commands.Sample.Update
     {
         public UpdateRequest(string id, string description)
         {
-            this.Id = id;
-            this.Description = description;
+            Id = id;
+            Description = description;
 
-            this.AddNotifications(new UpdateRequestValidator().Validate(this));
+            AddNotifications(new UpdateRequestValidator().Validate(this));
         }
 
         public string Id { get; }

@@ -6,8 +6,8 @@ namespace Template.Application.Commands.Sample.Update
     {
         public UpdateRequestValidator()
         {
-            this.RuleFor(x => x.Id).NotEmpty();
-            this.RuleFor(x => x.Description).NotEmpty().MaximumLength(250);
+            RuleFor(x => x.Id).NotEmpty();
+            RuleFor(x => x.Description).NotEmpty().MaximumLength(250);
         }
     }
 }

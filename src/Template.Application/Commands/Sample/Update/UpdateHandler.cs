@@ -18,32 +18,28 @@ namespace Template.Application.Commands.Sample.Update
         private readonly ISampleRepository _sampleRepository;
         private readonly IUnitOfWork       _unitOfWork;
 
-        public UpdateHandler(IEventPublisher eventPublisher,
-            ISampleRepository sampleRepository,
-            IUnitOfWork unitOfWork,
-            ISampleAdapter sampleAdapter) : base(eventPublisher)
+        public UpdateHandler(IEventPublisher eventPublisher, ISampleRepository sampleRepository,
+                             IUnitOfWork unitOfWork, ISampleAdapter sampleAdapter) : base(
+            eventPublisher)
         {
-            this._sampleRepository = sampleRepository;
-            this._unitOfWork       = unitOfWork;
-            this._sampleAdapter    = sampleAdapter;
+            _sampleRepository = sampleRepository;
+            _unitOfWork       = unitOfWork;
+            _sampleAdapter    = sampleAdapter;
         }
 
         public override async Task<Result> Handle(UpdateRequest request,
             CancellationToken cancellationToken)
         {
-            Domain.Sample.Sample item =
-                await this._sampleRepository.GetByIdAsync(request.Id);
+            Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
             // sample must exist
-            request.AddNotifications(
-                new NotNullValidator<Domain.Sample.Sample>().Validate(item));
+            request.AddNotifications(new NotNullValidator<Domain.Sample.Sample>().Validate(item));
 
             // gets random desc from adapter
-            string randomDesc = await this._sampleAdapter.GetRandomDescriptionAsync();
+            string randomDesc = await _sampleAdapter.GetRandomDescriptionAsync();
 
             // random desc should contain a non-empty string
-            request.AddNotifications(
-                new NotEmptyValidator<string>().Validate(randomDesc));
+            request.AddNotifications(new NotEmptyValidator<string>().Validate(randomDesc));
 
             string newDescription = $"{request.Description} {randomDesc}";
 
@@ -52,12 +48,11 @@ namespace Template.Application.Commands.Sample.Update
 
             if (request.IsValid)
             {
-                await this._sampleRepository.UpdateAsync(item);
+                await _sampleRepository.UpdateAsync(item);
 
-                await this._unitOfWork.SaveAsync();
+                await _unitOfWork.SaveAsync();
 
-                await this.EventPublisher.Publish(
-                    new SampleUpdated(request.Id, newDescription),
+                await EventPublisher.Publish(new SampleUpdated(request.Id, newDescription),
                     cancellationToken);
             }
 
