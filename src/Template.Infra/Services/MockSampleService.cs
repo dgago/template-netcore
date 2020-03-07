@@ -5,7 +5,7 @@ using Template.Domain.Sample;
 
 namespace Template.Infra.Services
 {
-    public class DummySampleService : ISampleService
+    public class MockSampleService : ISampleService
     {
         public Task<int> CalculateSampleAsync(Sample description)
         {

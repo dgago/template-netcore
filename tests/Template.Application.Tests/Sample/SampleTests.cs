@@ -1,8 +1,6 @@
-using Template.Domain.Sample;
-
 using Xunit;
 
-namespace Template.Application.Tests
+namespace Template.Application.Tests.Sample
 {
     public class SampleTests
     {
@@ -12,9 +10,9 @@ namespace Template.Application.Tests
         [InlineData(null, "", false)]
         [InlineData("", null, false)]
         [InlineData("1", "2", true)]
-        public void Sample_Should_Not_Be_Invalid(string id, string description, bool expected)
+        public void Sample_Should_Be_Valid(string id, string description, bool expected)
         {
-            Sample sample = new Sample(id, description);
+            Domain.Sample.Sample sample = new Domain.Sample.Sample(id, description);
 
             Assert.Equal(sample.IsValid, expected);
         }

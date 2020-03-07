@@ -9,32 +9,32 @@ using Template.Domain.Sample;
 
 namespace Template.Infra.Repositories
 {
-    public class DummySampleRepository : ISampleRepository
+    public class MockSampleRepository : ISampleRepository
     {
         private readonly IDictionary<string, Sample> _db;
 
-        public DummySampleRepository(IDictionary<string, Sample> db)
+        public MockSampleRepository(IDictionary<string, Sample> db)
         {
-            this._db = db ?? new Dictionary<string, Sample>();
+            _db = db ?? new Dictionary<string, Sample>();
         }
 
         public Task InsertAsync(Sample item)
         {
-            this._db.Add(item.Id, item);
+            _db.Add(item.Id, item);
 
             return Task.CompletedTask;
         }
 
         public Task<Sample> GetByIdAsync(string id)
         {
-            return Task.FromResult(this._db[id]);
+            return Task.FromResult(_db[id]);
         }
 
         public Task DeleteAsync(Sample item)
         {
-            if (this._db.ContainsKey(item.Id))
+            if (_db.ContainsKey(item.Id))
             {
-                this._db.Remove(item.Id);
+                _db.Remove(item.Id);
             }
 
             return Task.CompletedTask;
@@ -42,9 +42,9 @@ namespace Template.Infra.Repositories
 
         public Task UpdateAsync(Sample item)
         {
-            if (this._db.ContainsKey(item.Id))
+            if (_db.ContainsKey(item.Id))
             {
-                this._db[item.Id] = item;
+                _db[item.Id] = item;
             }
 
             return Task.CompletedTask;
@@ -54,8 +54,8 @@ namespace Template.Infra.Repositories
             string description)
         {
             return Task.FromResult(new Tuple<IEnumerable<SampleDto>, long>(
-                this._db.Select(x => SampleDto.FromEntity(x.Value)).ToList(),
-                this._db.Count));
+                _db.Select(x => SampleDto.FromEntity(x.Value)).ToList(),
+                _db.Count));
         }
     }
 }

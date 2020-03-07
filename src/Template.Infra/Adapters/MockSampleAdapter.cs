@@ -4,7 +4,7 @@ using Template.Application.Adapters;
 
 namespace Template.Infra.Adapters
 {
-    public class DummySampleAdapter : ISampleAdapter
+    public class MockSampleAdapter : ISampleAdapter
     {
         public Task<string> GetRandomDescriptionAsync()
         {
