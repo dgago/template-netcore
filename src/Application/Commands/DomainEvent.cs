@@ -11,10 +11,12 @@ namespace Application.Commands
             CreatedAt = DateTime.UtcNow;
         }
 
+/*
         public DomainEvent(DateTime createdAt)
         {
             CreatedAt = createdAt;
         }
+*/
 
         public DateTime CreatedAt { get; set; }
     }

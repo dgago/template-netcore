@@ -14,26 +14,31 @@ namespace Template.Application.Commands.Sample.Update
 {
     public class UpdateHandler : BaseRequestHandler<UpdateRequest, Result>
     {
-        private readonly ISampleAdapter    _sampleAdapter;
+        private readonly ISampleAdapter _sampleAdapter;
         private readonly ISampleRepository _sampleRepository;
-        private readonly IUnitOfWork       _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public UpdateHandler(IEventPublisher eventPublisher, ISampleRepository sampleRepository,
                              IUnitOfWork unitOfWork, ISampleAdapter sampleAdapter) : base(
             eventPublisher)
         {
             _sampleRepository = sampleRepository;
-            _unitOfWork       = unitOfWork;
-            _sampleAdapter    = sampleAdapter;
+            _unitOfWork = unitOfWork;
+            _sampleAdapter = sampleAdapter;
         }
 
         public override async Task<Result> Handle(UpdateRequest request,
-            CancellationToken cancellationToken)
+                                                  CancellationToken cancellationToken)
         {
             Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
             // sample must exist
             request.AddNotifications(new NotNullValidator<Domain.Sample.Sample>().Validate(item));
+
+            if (!request.IsValid)
+            {
+                return new Result(request.Notifications);
+            }
 
             // gets random desc from adapter
             string randomDesc = await _sampleAdapter.GetRandomDescriptionAsync();
@@ -53,7 +58,7 @@ namespace Template.Application.Commands.Sample.Update
                 await _unitOfWork.SaveAsync();
 
                 await EventPublisher.Publish(new SampleUpdated(request.Id, newDescription),
-                    cancellationToken);
+                                             cancellationToken);
             }
 
             return new Result(request.Notifications);

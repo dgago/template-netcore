@@ -21,16 +21,15 @@ namespace Template.Application.Commands.Sample.GetById
         }
 
         public async Task<EntityResult<SampleDto>> Handle(GetByIdRequest request,
-            CancellationToken cancellationToken)
+                                                          CancellationToken cancellationToken)
         {
-            Domain.Sample.Sample item =
-                await _sampleRepository.GetByIdAsync(request.Id);
+            Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
-            request.AddNotifications(
-                new NotNullValidator<Domain.Sample.Sample>().Validate(item));
+            request.AddNotifications(new NotNullValidator<Domain.Sample.Sample>().Validate(item));
 
-            return new EntityResult<SampleDto>(request.Notifications,
-                SampleDto.FromEntity(item));
+            return !request.IsValid
+                ? new EntityResult<SampleDto>(request.Notifications, null)
+                : new EntityResult<SampleDto>(request.Notifications, SampleDto.FromEntity(item));
         }
     }
 }
