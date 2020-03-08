@@ -6,6 +6,7 @@ using Application.Models.Result;
 
 using FluentValidation.Results;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Template.Application.Commands.Sample.GetById;
@@ -28,7 +29,7 @@ namespace Template.Application.Tests.Sample.GetById
         {
             // Arange
             MockSampleRepository repository = new MockSampleRepository(
-                new Dictionary<string, Domain.Sample.Sample>()
+                new Dictionary<string, Domain.Sample.Sample>
                 {
                     {"1", new Domain.Sample.Sample("1", "1")}
                 });
@@ -53,9 +54,10 @@ namespace Template.Application.Tests.Sample.GetById
             }
         }
 
-        protected override void AddServices(ServiceCollection services)
+        protected override void AddServices(IServiceCollection services,
+            IConfiguration configuration)
         {
-            Services.AddTemplate();
+            Services.ConfigureTemplateServices(configuration);
         }
     }
 }

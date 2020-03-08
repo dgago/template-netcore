@@ -32,20 +32,20 @@ namespace Api
             };
 
             return !result.IsValid
-                ? this.CreateErrorResult(result)
+                ? CreateErrorResult(result)
                 : new CreatedResult(uriBuilder.ToString(), result.Item);
         }
 
         public IActionResult GetOkResult(Result result)
         {
-            return !result.IsValid ? this.CreateErrorResult(result) : new OkResult();
+            return !result.IsValid ? CreateErrorResult(result) : new OkResult();
         }
 
         public IActionResult GetOkObjectResult<T>(EntityResult<T> result)
             where T : class
         {
             return !result.IsValid
-                ? this.CreateErrorResult(result)
+                ? CreateErrorResult(result)
                 : new OkObjectResult(result.Item);
         }
 
@@ -55,14 +55,14 @@ namespace Api
         {
             response.Headers.Add("x-count", result.Count.ToString());
             return !result.IsValid
-                ? this.CreateErrorResult(result)
+                ? CreateErrorResult(result)
                 : new OkObjectResult(result.Items);
         }
 
         private IActionResult CreateErrorResult(Result result)
         {
             ActionResult actionResult;
-            ModelStateDictionary modelState = this.GetErrors(result);
+            ModelStateDictionary modelState = GetErrors(result);
             switch (result.Notifications.First().Errors.First().ErrorCode)
             {
                 case NOT_FOUND:
@@ -100,7 +100,7 @@ namespace Api
         public IActionResult GetNoContentResult(Result result)
         {
             return !result.IsValid
-                ? this.CreateErrorResult(result)
+                ? CreateErrorResult(result)
                 : new NoContentResult();
         }
     }

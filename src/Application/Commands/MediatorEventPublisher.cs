@@ -11,20 +11,20 @@ namespace Application.Commands
 
         public MediatorEventPublisher(IMediator mediator)
         {
-            this._mediator = mediator;
+            _mediator = mediator;
         }
 
         public Task Publish<TNotification>(TNotification notification,
             CancellationToken cancellationToken = default)
             where TNotification : INotification
         {
-            return this._mediator.Publish(notification, cancellationToken);
+            return _mediator.Publish(notification, cancellationToken);
         }
 
         public Task<TResponse> Send<TResponse>(IRequest<TResponse> request,
             CancellationToken cancellationToken = default)
         {
-            return this._mediator.Send(request, cancellationToken);
+            return _mediator.Send(request, cancellationToken);
         }
     }
 }

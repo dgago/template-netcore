@@ -16,17 +16,16 @@ namespace Template.Application.Commands.Sample.Insert
         InsertHandler : BaseRequestHandler<InsertRequest, EntityResult<SampleDto>>
     {
         private readonly ISampleRepository _sampleRepository;
-        private readonly ISampleService    _sampleService;
-        private readonly IUnitOfWork       _unitOfWork;
+        private readonly ISampleService _sampleService;
+        private readonly IUnitOfWork _unitOfWork;
 
         public InsertHandler(IEventPublisher eventPublisher,
-            ISampleRepository sampleRepository,
-            IUnitOfWork unitOfWork,
+            ISampleRepository sampleRepository, IUnitOfWork unitOfWork,
             ISampleService sampleService) : base(eventPublisher)
         {
             _sampleRepository = sampleRepository;
-            _unitOfWork       = unitOfWork;
-            _sampleService    = sampleService;
+            _unitOfWork = unitOfWork;
+            _sampleService = sampleService;
         }
 
         public override async Task<EntityResult<SampleDto>> Handle(InsertRequest request,
@@ -36,6 +35,8 @@ namespace Template.Application.Commands.Sample.Insert
             {
                 return new EntityResult<SampleDto>(request.Notifications, request.Item);
             }
+
+            // TODO: validate that the entity does not exist or implement idempotence
 
             int calc =
                 await _sampleService.CalculateSampleAsync(request.Item.ToEntity());
@@ -48,12 +49,12 @@ namespace Template.Application.Commands.Sample.Insert
                 return new EntityResult<SampleDto>(request.Notifications, request.Item);
             }
 
-                await _sampleRepository.InsertAsync(request.Item.ToEntity());
+            await _sampleRepository.InsertAsync(request.Item.ToEntity());
 
-                await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync();
 
-                await EventPublisher.Publish(new SampleInserted(request.Item),
-                    cancellationToken);
+            await EventPublisher.Publish(new SampleInserted(request.Item),
+                cancellationToken);
 
             return new EntityResult<SampleDto>(request.Notifications, request.Item);
         }

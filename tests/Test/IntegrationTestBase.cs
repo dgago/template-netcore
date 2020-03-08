@@ -1,32 +1,33 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.IO;
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Test
 {
     public abstract class IntegrationTestBase
     {
         protected readonly ServiceProvider   ServiceProvider;
-        protected readonly ServiceCollection Services;
+        protected readonly IServiceCollection Services;
 
         protected IntegrationTestBase()
         {
-//            IConfigurationBuilder builder = new ConfigurationBuilder()
-//                .SetBasePath(Directory.GetCurrentDirectory())
-//                .AddJsonFile("appsettings.json", true, true)
-//                .AddEnvironmentVariables();
-//
-//            IConfigurationRoot configuration = builder.Build();
+            IConfigurationBuilder builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .AddEnvironmentVariables();
+
+            IConfigurationRoot configuration = builder.Build();
 
             Services = new ServiceCollection();
             Services.AddLogging();
 
-            AddServices(Services);
+            AddServices(Services, configuration);
 
             ServiceProvider = Services.BuildServiceProvider();
-
-//            IServiceScopeFactory scopeFactory =
-//                this.ServiceProvider.GetService<IServiceScopeFactory>();
         }
 
-        protected abstract void AddServices(ServiceCollection services);
+        protected abstract void AddServices(IServiceCollection services,
+            IConfiguration configuration);
     }
 }

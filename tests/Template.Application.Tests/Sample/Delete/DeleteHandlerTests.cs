@@ -9,6 +9,7 @@ using FluentValidation.Results;
 
 using MediatR;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Moq;
@@ -33,11 +34,11 @@ namespace Template.Application.Tests.Sample.Delete
         public async void DeleteHandler_Should_Work(string id, bool expected)
         {
             // Arange
-            IMediator mediator = ServiceProvider.GetService<IMediator>();
+            IMediator mediator = this.ServiceProvider.GetService<IMediator>();
 
             MockEventPublisher publisher = new MockEventPublisher(mediator);
             MockSampleRepository repository = new MockSampleRepository(
-                new Dictionary<string, Domain.Sample.Sample>()
+                new Dictionary<string, Domain.Sample.Sample>
                 {
                     {"1", new Domain.Sample.Sample("1", "1")}
                 });
@@ -63,9 +64,10 @@ namespace Template.Application.Tests.Sample.Delete
             }
         }
 
-        protected override void AddServices(ServiceCollection services)
+        protected override void AddServices(IServiceCollection services,
+            IConfiguration configuration)
         {
-            Services.AddTemplate();
+            this.Services.ConfigureTemplateServices(configuration);
         }
     }
 }

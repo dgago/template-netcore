@@ -6,6 +6,7 @@ using Application.Models.Result;
 
 using FluentValidation.Results;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Template.Application.Commands.Sample;
@@ -25,17 +26,17 @@ namespace Template.Application.Tests.Sample.Find
         [InlineData(null, null, 3, 4)]
         [InlineData("", "", 3, 4)]
         [InlineData("1", "", 1, 1)]
-        public async void FindHandler_Should_Work(string id, string description, int expected,
-                                                  int count)
+        public async void FindHandler_Should_Work(string id, string description,
+            int expected, int count)
         {
             // Arange
             MockSampleRepository repository = new MockSampleRepository(
-                new Dictionary<string, Domain.Sample.Sample>()
+                new Dictionary<string, Domain.Sample.Sample>
                 {
                     {"1", new Domain.Sample.Sample("1", "1")},
                     {"2", new Domain.Sample.Sample("2", "2")},
                     {"3", new Domain.Sample.Sample("3", "3")},
-                    {"4", new Domain.Sample.Sample("4", "4")},
+                    {"4", new Domain.Sample.Sample("4", "4")}
                 });
 
             FindHandler handler = new FindHandler(repository);
@@ -43,7 +44,8 @@ namespace Template.Application.Tests.Sample.Find
             FindRequest command = new FindRequest(id, description, 1, 3);
 
             // Act
-            QueryResult<SampleDto> result = await handler.Handle(command, new CancellationToken());
+            QueryResult<SampleDto> result =
+                await handler.Handle(command, new CancellationToken());
 
             // Asert
             List<ValidationResult> notValidNotifications =
@@ -54,9 +56,10 @@ namespace Template.Application.Tests.Sample.Find
             Assert.Equal(count, result.Count);
         }
 
-        protected override void AddServices(ServiceCollection services)
+        protected override void AddServices(IServiceCollection services,
+            IConfiguration configuration)
         {
-            Services.AddTemplate();
+            Services.ConfigureTemplateServices(configuration);
         }
     }
 }

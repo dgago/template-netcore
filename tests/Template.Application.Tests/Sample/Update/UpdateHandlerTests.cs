@@ -10,6 +10,7 @@ using FluentValidation.Results;
 
 using MediatR;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Moq;
@@ -34,21 +35,23 @@ namespace Template.Application.Tests.Sample.Update
         [InlineData(null, "", false)]
         [InlineData("", null, false)]
         [InlineData("1", "2", true)]
-        public async void UpdateHandler_Should_Work(string id, string description, bool expected)
+        public async void UpdateHandler_Should_Work(string id, string description,
+            bool expected)
         {
             // Arange
             IMediator mediator = ServiceProvider.GetService<IMediator>();
 
             MockEventPublisher publisher = new MockEventPublisher(mediator);
             MockSampleRepository repository = new MockSampleRepository(
-                new Dictionary<string, Domain.Sample.Sample>()
+                new Dictionary<string, Domain.Sample.Sample>
                 {
                     {"1", new Domain.Sample.Sample("1", "1")}
                 });
             Mock<IUnitOfWork> uow = new Mock<IUnitOfWork>();
             MockSampleAdapter adapter = new MockSampleAdapter();
 
-            UpdateHandler handler = new UpdateHandler(publisher, repository, uow.Object, adapter);
+            UpdateHandler handler =
+                new UpdateHandler(publisher, repository, uow.Object, adapter);
 
             UpdateRequest command = new UpdateRequest(id, description);
 
@@ -66,7 +69,8 @@ namespace Template.Application.Tests.Sample.Update
             else
             {
                 Assert.NotEmpty(notValidNotifications);
-                Assert.False(ContainsType(publisher.Notifications, typeof(SampleUpdated)));
+                Assert.False(ContainsType(publisher.Notifications,
+                    typeof(SampleUpdated)));
             }
         }
 
@@ -75,9 +79,10 @@ namespace Template.Application.Tests.Sample.Update
             return collection.Any(i => i.GetType() == type);
         }
 
-        protected override void AddServices(ServiceCollection services)
+        protected override void AddServices(IServiceCollection services,
+            IConfiguration configuration)
         {
-            Services.AddTemplate();
+            Services.ConfigureTemplateServices(configuration);
         }
     }
 }

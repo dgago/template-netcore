@@ -13,9 +13,9 @@ namespace Template.Infra.Repositories
     {
         private readonly IDictionary<string, Sample> _db;
 
-        public MockSampleRepository(IDictionary<string, Sample> db)
+        public MockSampleRepository()
         {
-            _db = db ?? new Dictionary<string, Sample>();
+            _db = new Dictionary<string, Sample>();
         }
 
         public Task InsertAsync(Sample item)
