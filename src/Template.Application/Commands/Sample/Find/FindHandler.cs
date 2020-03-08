@@ -21,10 +21,13 @@ namespace Template.Application.Commands.Sample.Find
         }
 
         public async Task<QueryResult<SampleDto>> Handle(FindRequest request,
-            CancellationToken cancellationToken)
+                                                         CancellationToken cancellationToken)
         {
             (IEnumerable<SampleDto> items, long count) =
-                await _sampleRepository.FindAsync(request.Id, request.Description);
+                await _sampleRepository.FindAsync(request.Id,
+                                                  request.Description,
+                                                  request.PageIndex,
+                                                  request.PageSize);
 
             return new QueryResult<SampleDto>(request.Notifications, items, count);
         }

@@ -50,12 +50,21 @@ namespace Template.Infra.Repositories
             return Task.CompletedTask;
         }
 
-        public Task<Tuple<IEnumerable<SampleDto>, long>> FindAsync(string id,
-            string description)
+        public Task<Tuple<IEnumerable<SampleDto>, long>> FindAsync(
+            string id, string description, int pageSize, int pageIndex)
         {
-            return Task.FromResult(new Tuple<IEnumerable<SampleDto>, long>(
-                _db.Select(x => SampleDto.FromEntity(x.Value)).ToList(),
-                _db.Count));
+            bool Predicate(KeyValuePair<string, Sample> x) =>
+                (string.IsNullOrEmpty(id) || x.Key == id) &&
+                (string.IsNullOrEmpty(description) || x.Value.Description == description);
+
+            List<SampleDto> dtos = _db.Where(Predicate)
+                                      .Skip((pageIndex - 1) * pageSize)
+                                      .Take(pageSize)
+                                      .Select(x => SampleDto.FromEntity(x.Value))
+                                      .ToList();
+
+            int count = _db.Count(Predicate);
+            return Task.FromResult(new Tuple<IEnumerable<SampleDto>, long>(dtos, count));
         }
     }
 }

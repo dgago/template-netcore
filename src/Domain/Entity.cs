@@ -22,9 +22,11 @@ namespace Domain
             }
         }
 
+/*
         public void AddNotifications(params ValidationResult[] items)
         {
             Notifications.AddRange(items);
         }
+*/
     }
 }

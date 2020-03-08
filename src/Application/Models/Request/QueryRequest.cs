@@ -5,14 +5,14 @@ namespace Application.Models.Request
     public abstract class QueryRequest<T> : Request<QueryResult<T>>
         where T : class
     {
-        protected QueryRequest(uint pageIndex, uint pageSize)
+        protected QueryRequest(int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;
             PageSize = pageSize;
         }
 
-        public uint PageIndex { get; set; }
+        public int PageIndex { get; set; }
 
-        public uint PageSize { get; set; }
+        public int PageSize { get; set; }
     }
 }

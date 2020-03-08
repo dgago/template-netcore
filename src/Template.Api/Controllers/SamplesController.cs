@@ -18,17 +18,18 @@ namespace Template.Api.Controllers
     [ApiController]
     public class SamplesController : ApiControllerBase
     {
-        public SamplesController(IEventPublisher eventPublisher, Presenter presenter) :
-            base(eventPublisher, presenter)
+        public SamplesController(IEventPublisher eventPublisher, Presenter presenter) : base(
+            eventPublisher,
+            presenter)
         {
         }
 
         // GET api/values
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery]string id, [FromQuery]string description)
+        public async Task<IActionResult> Get([FromQuery] string id, [FromQuery] string description)
         {
             QueryResult<SampleDto> result =
-                await EventPublisher.Send(new FindRequest(id, description, 1, 10));
+                await EventPublisher.Send(new FindRequest(id, description, 1, 3));
             return Presenter.GetListResult(Response, result);
         }
 
@@ -36,8 +37,7 @@ namespace Template.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            EntityResult<SampleDto> result =
-                await EventPublisher.Send(new GetByIdRequest(id)); 
+            EntityResult<SampleDto> result = await EventPublisher.Send(new GetByIdRequest(id));
             return Presenter.GetOkObjectResult(result);
         }
 
@@ -45,8 +45,7 @@ namespace Template.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] SampleDto item)
         {
-            EntityResult<SampleDto> result =
-                await EventPublisher.Send(new InsertRequest(item));
+            EntityResult<SampleDto> result = await EventPublisher.Send(new InsertRequest(item));
             return Presenter.GetCreatedResult(result);
         }
 
@@ -54,13 +53,11 @@ namespace Template.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] SampleDto item)
         {
-            Result result =
-                await EventPublisher.Send(new UpdateRequest(id, item.Description));
+            Result result = await EventPublisher.Send(new UpdateRequest(id, item.Description));
             return Presenter.GetNoContentResult(result);
         }
 
         // DELETE api/values/5
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
