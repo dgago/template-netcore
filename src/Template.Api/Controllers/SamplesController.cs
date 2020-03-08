@@ -29,10 +29,12 @@ namespace Template.Api.Controllers
         // GET api/values
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string id,
-            [FromQuery] string description)
+            [FromQuery] string description, [FromQuery] int pageIndex = 1,
+            [FromQuery] int pageSize = 3)
         {
             QueryResult<SampleDto> result =
-                await EventPublisher.Send(new FindRequest(id, description, 1, 3));
+                await EventPublisher.Send(new FindRequest(id, description, pageIndex,
+                    pageSize));
             return Presenter.GetListResult(Response, result);
         }
 
@@ -59,7 +61,8 @@ namespace Template.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] SampleDto item)
         {
-            Result result = await EventPublisher.Send(new UpdateRequest(id, item.Description));
+            Result result =
+                await EventPublisher.Send(new UpdateRequest(id, item.Description));
             return Presenter.GetNoContentResult(result);
         }
 

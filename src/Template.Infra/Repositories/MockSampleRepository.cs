@@ -51,7 +51,7 @@ namespace Template.Infra.Repositories
         }
 
         public Task<Tuple<IEnumerable<SampleDto>, long>> FindAsync(
-            string id, string description, int pageSize, int pageIndex)
+            string id, string description, int pageIndex, int pageSize)
         {
             bool Predicate(KeyValuePair<string, Sample> x) =>
                 (string.IsNullOrEmpty(id) || x.Key == id) &&
