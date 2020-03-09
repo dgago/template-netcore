@@ -13,9 +13,9 @@ namespace Template.Infra.Repositories
     {
         private readonly IDictionary<string, Sample> _db;
 
-        public MockSampleRepository()
+        public MockSampleRepository(IDictionary<string, Sample> db)
         {
-            _db = new Dictionary<string, Sample>();
+            _db = db ?? new Dictionary<string, Sample>();
         }
 
         public Task InsertAsync(Sample item)
@@ -27,7 +27,9 @@ namespace Template.Infra.Repositories
 
         public Task<Sample> GetByIdAsync(string id)
         {
-            return Task.FromResult(_db[id]);
+            return id == null || !_db.ContainsKey(id)
+                ? Task.FromResult<Sample>(null)
+                : Task.FromResult(_db[id]);
         }
 
         public Task DeleteAsync(Sample item)

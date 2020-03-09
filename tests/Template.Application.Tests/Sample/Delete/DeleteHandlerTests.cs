@@ -15,8 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
 using Template.Application.Commands.Sample.Delete;
-using Template.Application.Tests.Sample.Mocks;
 using Template.Bootstrap;
+using Template.Infra.Repositories;
 
 using Test;
 using Test.Mocks;
@@ -34,7 +34,7 @@ namespace Template.Application.Tests.Sample.Delete
         public async void DeleteHandler_Should_Work(string id, bool expected)
         {
             // Arange
-            IMediator mediator = this.ServiceProvider.GetService<IMediator>();
+            IMediator mediator = ServiceProvider.GetService<IMediator>();
 
             MockEventPublisher publisher = new MockEventPublisher(mediator);
             MockSampleRepository repository = new MockSampleRepository(
@@ -67,7 +67,7 @@ namespace Template.Application.Tests.Sample.Delete
         protected override void AddServices(IServiceCollection services,
             IConfiguration configuration)
         {
-            this.Services.ConfigureTemplateServices(configuration);
+            Services.ConfigureTemplateServices(configuration);
         }
     }
 }

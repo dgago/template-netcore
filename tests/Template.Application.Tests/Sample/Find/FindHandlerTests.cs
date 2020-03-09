@@ -6,15 +6,18 @@ using Application.Models.Result;
 
 using FluentValidation.Results;
 
+using MediatR;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Template.Application.Commands.Sample;
 using Template.Application.Commands.Sample.Find;
-using Template.Application.Tests.Sample.Mocks;
 using Template.Bootstrap;
+using Template.Infra.Repositories;
 
 using Test;
+using Test.Mocks;
 
 using Xunit;
 
@@ -26,10 +29,13 @@ namespace Template.Application.Tests.Sample.Find
         [InlineData(null, null, 3, 4)]
         [InlineData("", "", 3, 4)]
         [InlineData("1", "", 1, 1)]
-        public async void FindHandler_Should_Work(string id, string description,
-            int expected, int count)
+        public async void FindHandler_Should_Work(string id, string description, int expected,
+                                                  int count)
         {
             // Arange
+            IMediator mediator = ServiceProvider.GetService<IMediator>();
+
+            MockEventPublisher publisher = new MockEventPublisher(mediator);
             MockSampleRepository repository = new MockSampleRepository(
                 new Dictionary<string, Domain.Sample.Sample>
                 {
@@ -39,13 +45,12 @@ namespace Template.Application.Tests.Sample.Find
                     {"4", new Domain.Sample.Sample("4", "4")}
                 });
 
-            FindHandler handler = new FindHandler(repository);
+            FindHandler handler = new FindHandler(repository, publisher);
 
             FindRequest command = new FindRequest(id, description, 1, 3);
 
             // Act
-            QueryResult<SampleDto> result =
-                await handler.Handle(command, new CancellationToken());
+            QueryResult<SampleDto> result = await handler.Handle(command, new CancellationToken());
 
             // Asert
             List<ValidationResult> notValidNotifications =
@@ -57,7 +62,7 @@ namespace Template.Application.Tests.Sample.Find
         }
 
         protected override void AddServices(IServiceCollection services,
-            IConfiguration configuration)
+                                            IConfiguration configuration)
         {
             Services.ConfigureTemplateServices(configuration);
         }

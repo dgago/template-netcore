@@ -5,8 +5,6 @@ using Application.Commands;
 using Application.Models.Result;
 using Application.Repositories;
 
-using Domain.Validation;
-
 using Template.Application.Repositories;
 
 namespace Template.Application.Commands.Sample.Delete
@@ -14,24 +12,21 @@ namespace Template.Application.Commands.Sample.Delete
     public class DeleteHandler : BaseRequestHandler<DeleteRequest, Result>
     {
         private readonly ISampleRepository _sampleRepository;
-        private readonly IUnitOfWork       _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteHandler(IEventPublisher eventPublisher,
-            ISampleRepository sampleRepository,
-            IUnitOfWork unitOfWork) : base(eventPublisher)
+        public DeleteHandler(IEventPublisher eventPublisher, ISampleRepository sampleRepository,
+                             IUnitOfWork unitOfWork) : base(eventPublisher)
         {
             _sampleRepository = sampleRepository;
-            _unitOfWork       = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public override async Task<Result> Handle(DeleteRequest request,
-            CancellationToken cancellationToken)
+                                                  CancellationToken cancellationToken)
         {
-            Domain.Sample.Sample item =
-                await _sampleRepository.GetByIdAsync(request.Id);
+            Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
-            request.AddNotifications(
-                new NotNullValidator<Domain.Sample.Sample>().Validate(item));
+            request.AddNotifications(NotNull(item));
 
             if (request.IsValid)
             {
@@ -39,8 +34,7 @@ namespace Template.Application.Commands.Sample.Delete
 
                 await _unitOfWork.SaveAsync();
 
-                await EventPublisher.Publish(new SampleDeleted(request.Id),
-                    cancellationToken);
+                await EventPublisher.Publish(new SampleDeleted(request.Id), cancellationToken);
             }
 
             return new Result(request.Notifications);

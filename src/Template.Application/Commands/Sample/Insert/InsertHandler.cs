@@ -5,8 +5,6 @@ using Application.Commands;
 using Application.Models.Result;
 using Application.Repositories;
 
-using Domain.Validation;
-
 using Template.Application.Repositories;
 using Template.Application.Services;
 
@@ -42,7 +40,7 @@ namespace Template.Application.Commands.Sample.Insert
                 await _sampleService.CalculateSampleAsync(request.Item.ToEntity());
 
             // calc must be != 0
-            request.AddNotifications(new NotEmptyValidator<int>().Validate(calc));
+            request.AddNotifications(NotEmpty(calc));
 
             if (!request.IsValid)
             {

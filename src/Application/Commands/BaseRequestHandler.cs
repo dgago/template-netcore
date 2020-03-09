@@ -1,6 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using Domain.Validation;
+
+using FluentValidation.Results;
+
 using MediatR;
 
 namespace Application.Commands
@@ -17,6 +21,16 @@ namespace Application.Commands
         }
 
         public abstract Task<TResponse> Handle(TRequest request,
-            CancellationToken cancellationToken);
+                                               CancellationToken cancellationToken);
+
+        protected ValidationResult NotEmpty<T>(T item)
+        {
+            return new NotEmptyValidator<T>().Validate(item);
+        }
+
+        protected static ValidationResult NotNull<T>(T item)
+        {
+            return new NotNullValidator<T>().Validate(item);
+        }
     }
 }

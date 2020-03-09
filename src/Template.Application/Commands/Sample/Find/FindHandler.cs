@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Application.Commands;
 using Application.Models.Result;
-
-using MediatR;
 
 using Template.Application.Repositories;
 
 namespace Template.Application.Commands.Sample.Find
 {
-    public class FindHandler : IRequestHandler<FindRequest, QueryResult<SampleDto>>
+    public class FindHandler : BaseRequestHandler<FindRequest, QueryResult<SampleDto>>
     {
         private readonly ISampleRepository _sampleRepository;
 
-        public FindHandler(ISampleRepository sampleRepository)
+        public FindHandler(ISampleRepository sampleRepository, IEventPublisher eventPublisher) :
+            base(eventPublisher)
         {
             _sampleRepository = sampleRepository;
         }
 
-        public async Task<QueryResult<SampleDto>> Handle(FindRequest request,
-                                                         CancellationToken cancellationToken)
+        public override async Task<QueryResult<SampleDto>> Handle(
+            FindRequest request, CancellationToken cancellationToken)
         {
             (IEnumerable<SampleDto> items, long count) =
                 await _sampleRepository.FindAsync(request.Id,

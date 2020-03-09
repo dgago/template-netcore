@@ -5,7 +5,7 @@ using Application.Commands;
 using Application.Models.Result;
 using Application.Repositories;
 
-using Domain.Validation;
+using FluentValidation.Results;
 
 using Template.Application.Adapters;
 using Template.Application.Repositories;
@@ -33,7 +33,8 @@ namespace Template.Application.Commands.Sample.Update
             Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
             // sample must exist
-            request.AddNotifications(new NotNullValidator<Domain.Sample.Sample>().Validate(item));
+            ValidationResult validationResult = NotNull(item);
+            request.AddNotifications(validationResult);
 
             if (!request.IsValid)
             {
@@ -44,7 +45,7 @@ namespace Template.Application.Commands.Sample.Update
             string randomDesc = await _sampleAdapter.GetRandomDescriptionAsync();
 
             // random desc should contain a non-empty string
-            request.AddNotifications(new NotEmptyValidator<string>().Validate(randomDesc));
+            request.AddNotifications(NotEmpty(randomDesc));
 
             string newDescription = $"{request.Description} {randomDesc}";
 

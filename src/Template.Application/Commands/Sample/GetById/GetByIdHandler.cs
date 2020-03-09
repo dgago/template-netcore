@@ -1,31 +1,29 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
+using Application.Commands;
 using Application.Models.Result;
-
-using Domain.Validation;
-
-using MediatR;
 
 using Template.Application.Repositories;
 
 namespace Template.Application.Commands.Sample.GetById
 {
-    public class GetByIdHandler : IRequestHandler<GetByIdRequest, EntityResult<SampleDto>>
+    public class GetByIdHandler : BaseRequestHandler<GetByIdRequest, EntityResult<SampleDto>>
     {
         private readonly ISampleRepository _sampleRepository;
 
-        public GetByIdHandler(ISampleRepository sampleRepository)
+        public GetByIdHandler(ISampleRepository sampleRepository, IEventPublisher eventPublisher) :
+            base(eventPublisher)
         {
             _sampleRepository = sampleRepository;
         }
 
-        public async Task<EntityResult<SampleDto>> Handle(GetByIdRequest request,
-                                                          CancellationToken cancellationToken)
+        public override async Task<EntityResult<SampleDto>> Handle(
+            GetByIdRequest request, CancellationToken cancellationToken)
         {
             Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
-            request.AddNotifications(new NotNullValidator<Domain.Sample.Sample>().Validate(item));
+            request.AddNotifications(NotNull(item));
 
             return !request.IsValid
                 ? new EntityResult<SampleDto>(request.Notifications, null)

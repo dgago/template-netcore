@@ -16,9 +16,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
 using Template.Application.Commands.Sample.Update;
-using Template.Application.Tests.Sample.Mocks;
 using Template.Bootstrap;
 using Template.Infra.Adapters;
+using Template.Infra.Repositories;
 
 using Test;
 using Test.Mocks;
@@ -35,8 +35,7 @@ namespace Template.Application.Tests.Sample.Update
         [InlineData(null, "", false)]
         [InlineData("", null, false)]
         [InlineData("1", "2", true)]
-        public async void UpdateHandler_Should_Work(string id, string description,
-            bool expected)
+        public async void UpdateHandler_Should_Work(string id, string description, bool expected)
         {
             // Arange
             IMediator mediator = ServiceProvider.GetService<IMediator>();
@@ -50,8 +49,7 @@ namespace Template.Application.Tests.Sample.Update
             Mock<IUnitOfWork> uow = new Mock<IUnitOfWork>();
             MockSampleAdapter adapter = new MockSampleAdapter();
 
-            UpdateHandler handler =
-                new UpdateHandler(publisher, repository, uow.Object, adapter);
+            UpdateHandler handler = new UpdateHandler(publisher, repository, uow.Object, adapter);
 
             UpdateRequest command = new UpdateRequest(id, description);
 
@@ -69,8 +67,7 @@ namespace Template.Application.Tests.Sample.Update
             else
             {
                 Assert.NotEmpty(notValidNotifications);
-                Assert.False(ContainsType(publisher.Notifications,
-                    typeof(SampleUpdated)));
+                Assert.False(ContainsType(publisher.Notifications, typeof(SampleUpdated)));
             }
         }
 
@@ -80,7 +77,7 @@ namespace Template.Application.Tests.Sample.Update
         }
 
         protected override void AddServices(IServiceCollection services,
-            IConfiguration configuration)
+                                            IConfiguration configuration)
         {
             Services.ConfigureTemplateServices(configuration);
         }

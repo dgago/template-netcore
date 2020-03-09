@@ -6,14 +6,17 @@ using Application.Models.Result;
 
 using FluentValidation.Results;
 
+using MediatR;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Template.Application.Commands.Sample.GetById;
-using Template.Application.Tests.Sample.Mocks;
 using Template.Bootstrap;
+using Template.Infra.Repositories;
 
 using Test;
+using Test.Mocks;
 
 using Xunit;
 
@@ -28,13 +31,16 @@ namespace Template.Application.Tests.Sample.GetById
         public async void GetByIdHandler_Should_Work(string id, bool expected)
         {
             // Arange
+            IMediator mediator = ServiceProvider.GetService<IMediator>();
+
+            MockEventPublisher publisher = new MockEventPublisher(mediator);
             MockSampleRepository repository = new MockSampleRepository(
                 new Dictionary<string, Domain.Sample.Sample>
                 {
                     {"1", new Domain.Sample.Sample("1", "1")}
                 });
 
-            GetByIdHandler handler = new GetByIdHandler(repository);
+            GetByIdHandler handler = new GetByIdHandler(repository, publisher);
 
             GetByIdRequest command = new GetByIdRequest(id);
 

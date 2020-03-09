@@ -17,8 +17,9 @@ using Moq;
 
 using Template.Application.Commands.Sample;
 using Template.Application.Commands.Sample.Insert;
-using Template.Application.Tests.Sample.Mocks;
 using Template.Bootstrap;
+using Template.Infra.Repositories;
+using Template.Infra.Services;
 
 using Test;
 using Test.Mocks;
@@ -35,8 +36,7 @@ namespace Template.Application.Tests.Sample.Insert
         [InlineData(null, "", false)]
         [InlineData("", null, false)]
         [InlineData("1", "2", true)]
-        public async void InsertHandler_Should_Work(string id, string description,
-            bool expected)
+        public async void InsertHandler_Should_Work(string id, string description, bool expected)
         {
             // Arange
             IMediator mediator = ServiceProvider.GetService<IMediator>();
@@ -47,15 +47,13 @@ namespace Template.Application.Tests.Sample.Insert
             Mock<IUnitOfWork> uow = new Mock<IUnitOfWork>();
             MockSampleService service = new MockSampleService();
 
-            InsertHandler handler =
-                new InsertHandler(publisher, repository, uow.Object, service);
+            InsertHandler handler = new InsertHandler(publisher, repository, uow.Object, service);
 
             SampleDto item = new SampleDto {Id = id, Description = description};
             InsertRequest command = new InsertRequest(item);
 
             // Act
-            EntityResult<SampleDto> result =
-                await handler.Handle(command, new CancellationToken());
+            EntityResult<SampleDto> result = await handler.Handle(command, new CancellationToken());
 
             // Asert
             List<ValidationResult> notValidNotifications =
@@ -63,14 +61,12 @@ namespace Template.Application.Tests.Sample.Insert
             if (expected)
             {
                 Assert.Empty(notValidNotifications);
-                Assert.True(ContainsType(publisher.Notifications,
-                    typeof(SampleInserted)));
+                Assert.True(ContainsType(publisher.Notifications, typeof(SampleInserted)));
             }
             else
             {
                 Assert.NotEmpty(notValidNotifications);
-                Assert.False(
-                    ContainsType(publisher.Notifications, typeof(SampleInserted)));
+                Assert.False(ContainsType(publisher.Notifications, typeof(SampleInserted)));
             }
         }
 
@@ -80,7 +76,7 @@ namespace Template.Application.Tests.Sample.Insert
         }
 
         protected override void AddServices(IServiceCollection services,
-            IConfiguration configuration)
+                                            IConfiguration configuration)
         {
             Services.ConfigureTemplateServices(configuration);
         }
