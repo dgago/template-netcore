@@ -33,8 +33,7 @@ namespace Template.Application.Commands.Sample.Update
             Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
             // sample must exist
-            ValidationResult validationResult = NotNull(item);
-            request.AddNotifications(validationResult);
+            request.AddNotifications(Exists(item));
 
             if (!request.IsValid)
             {

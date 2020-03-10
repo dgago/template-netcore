@@ -21,7 +21,7 @@ namespace Application.Commands
         }
 
         public abstract Task<TResponse> Handle(TRequest request,
-                                               CancellationToken cancellationToken);
+            CancellationToken cancellationToken);
 
         protected ValidationResult NotEmpty<T>(T item)
         {
@@ -31,6 +31,20 @@ namespace Application.Commands
         protected static ValidationResult NotNull<T>(T item)
         {
             return new NotNullValidator<T>().Validate(item);
+        }
+
+        protected static ValidationResult Exists<T>(T item)
+            where T : class
+        {
+            ValidationResult res = new ValidationResult();
+            if (item == null)
+            {
+                ValidationFailure failure =
+                    new ValidationFailure("NotFound", "Item was not found.");
+                res.Errors.Add(failure);
+            }
+
+            return res;
         }
     }
 }

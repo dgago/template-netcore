@@ -23,7 +23,7 @@ namespace Template.Application.Commands.Sample.GetById
         {
             Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
-            request.AddNotifications(NotNull(item));
+            request.AddNotifications(Exists(item));
 
             return !request.IsValid
                 ? new EntityResult<SampleDto>(request.Notifications, null)

@@ -26,7 +26,7 @@ namespace Template.Application.Commands.Sample.Delete
         {
             Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
-            request.AddNotifications(NotNull(item));
+            request.AddNotifications(Exists(item));
 
             if (request.IsValid)
             {

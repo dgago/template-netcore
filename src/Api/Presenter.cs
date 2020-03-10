@@ -63,7 +63,14 @@ namespace Api
         {
             ActionResult actionResult;
             ModelStateDictionary modelState = GetErrors(result);
-            switch (result.Notifications.First().Errors.First().ErrorCode)
+
+            ValidationResult res = result.Notifications.FirstOrDefault(x => !x.IsValid);
+            if (res == null || res.Errors.Count == 0)
+            {
+                return new BadRequestObjectResult(modelState);
+            }
+
+            switch (res.Errors.First().ErrorCode)
             {
                 case NOT_FOUND:
                     actionResult = new NotFoundObjectResult(modelState);
@@ -88,6 +95,11 @@ namespace Api
 
             foreach (ValidationResult notif in result.Notifications)
             {
+                if (notif.IsValid)
+                {
+                    continue;
+                }
+
                 foreach (ValidationFailure error in notif.Errors)
                 {
                     modelState.AddModelError(error.PropertyName, error.ErrorMessage);
@@ -99,9 +111,7 @@ namespace Api
 
         public IActionResult GetNoContentResult(Result result)
         {
-            return !result.IsValid
-                ? CreateErrorResult(result)
-                : new NoContentResult();
+            return !result.IsValid ? CreateErrorResult(result) : new NoContentResult();
         }
     }
 }
