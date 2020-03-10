@@ -13,6 +13,11 @@ namespace Template.Infra.Repositories
     {
         private readonly IDictionary<string, Sample> _db;
 
+        public MockSampleRepository()
+        {
+            _db = new Dictionary<string, Sample>();
+        }
+
         public MockSampleRepository(IDictionary<string, Sample> db)
         {
             _db = db ?? new Dictionary<string, Sample>();
