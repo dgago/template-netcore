@@ -20,7 +20,8 @@ namespace Template.Bootstrap
     public static class ServiceConfiguration
     {
         public static IServiceCollection ConfigureTemplateServices(
-            this IServiceCollection services, IConfiguration configuration)
+            this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddTemplateInfrastructure()
                 .AddMediatR(typeof(InsertHandler).Assembly)

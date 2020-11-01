@@ -16,10 +16,7 @@ namespace Domain
 
         public bool IsValid
         {
-            get
-            {
-                return Notifications.All(x => x.IsValid);
-            }
+            get { return Notifications.All(x => x.IsValid); }
         }
 
 /*

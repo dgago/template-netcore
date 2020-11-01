@@ -17,7 +17,9 @@ namespace Template.Application.Repositories
 
         Task UpdateAsync(Sample item);
 
-        Task<Tuple<IEnumerable<SampleDto>, long>> FindAsync(string id, string description,
-                                                            int pageIndex, int pageSize);
+        Task<Tuple<IEnumerable<SampleDto>, long>> FindAsync(string id,
+            string description,
+            int pageIndex,
+            int pageSize);
     }
 }

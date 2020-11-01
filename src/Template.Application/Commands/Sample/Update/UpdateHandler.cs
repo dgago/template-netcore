@@ -5,8 +5,6 @@ using Application.Commands;
 using Application.Models.Result;
 using Application.Repositories;
 
-using FluentValidation.Results;
-
 using Template.Application.Adapters;
 using Template.Application.Repositories;
 
@@ -18,8 +16,10 @@ namespace Template.Application.Commands.Sample.Update
         private readonly ISampleRepository _sampleRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateHandler(IEventPublisher eventPublisher, ISampleRepository sampleRepository,
-                             IUnitOfWork unitOfWork, ISampleAdapter sampleAdapter) : base(
+        public UpdateHandler(IEventPublisher eventPublisher,
+            ISampleRepository sampleRepository,
+            IUnitOfWork unitOfWork,
+            ISampleAdapter sampleAdapter) : base(
             eventPublisher)
         {
             _sampleRepository = sampleRepository;
@@ -28,7 +28,7 @@ namespace Template.Application.Commands.Sample.Update
         }
 
         public override async Task<Result> Handle(UpdateRequest request,
-                                                  CancellationToken cancellationToken)
+            CancellationToken cancellationToken)
         {
             Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
@@ -51,15 +51,17 @@ namespace Template.Application.Commands.Sample.Update
             // attempts to change description and saves result in the notifications collection
             request.AddNotifications(item.ChangeDescription(newDescription));
 
-            if (request.IsValid)
+            if (!request.IsValid)
             {
-                await _sampleRepository.UpdateAsync(item);
-
-                await _unitOfWork.SaveAsync();
-
-                await EventPublisher.Publish(new SampleUpdated(request.Id, newDescription),
-                                             cancellationToken);
+                return new Result(request.Notifications);
             }
+
+            await _sampleRepository.UpdateAsync(item);
+
+            await _unitOfWork.SaveAsync();
+
+            await EventPublisher.Publish(new SampleUpdated(request.Id, newDescription),
+                cancellationToken);
 
             return new Result(request.Notifications);
         }

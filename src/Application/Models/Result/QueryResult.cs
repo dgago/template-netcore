@@ -15,9 +15,9 @@ namespace Application.Models.Result
             Items = items;
             Count = count;
         }
-        
+
         public IEnumerable<T> Items { get; }
-        
+
         public long Count { get; }
     }
 }

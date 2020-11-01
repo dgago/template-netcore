@@ -15,7 +15,7 @@ namespace Template.Domain.Sample
 
             if (IsValid)
             {
-                Id          = id;
+                Id = id;
                 Description = description;
             }
         }

@@ -6,7 +6,7 @@ namespace Template.Application.Commands.Sample.Update
     {
         public SampleUpdated(string id, string description)
         {
-            Id          = id;
+            Id = id;
             Description = description;
         }
 

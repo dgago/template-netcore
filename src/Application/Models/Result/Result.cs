@@ -19,7 +19,7 @@ namespace Application.Models.Result
             get
             {
                 return Notifications.Count == 0
-                    || Notifications.All(x => x.IsValid);
+                       || Notifications.All(x => x.IsValid);
             }
         }
     }

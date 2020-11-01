@@ -7,7 +7,6 @@ using Application.Models.Result;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Template.Api.Presenters;
 using Template.Application.Commands.Sample;
 using Template.Application.Commands.Sample.Delete;
 using Template.Application.Commands.Sample.Find;
@@ -22,18 +21,21 @@ namespace Template.Api.Controllers
     public class SamplesController : ApiControllerBase
     {
         public SamplesController(IEventPublisher eventPublisher,
-            SamplesPresenter presenter) : base(eventPublisher, presenter)
+            Presenter presenter) : base(eventPublisher, presenter)
         {
         }
 
         // GET api/values
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string id,
-            [FromQuery] string description, [FromQuery] int pageIndex = 1,
+            [FromQuery] string description,
+            [FromQuery] int pageIndex = 1,
             [FromQuery] int pageSize = 3)
         {
             QueryResult<SampleDto> result =
-                await EventPublisher.Send(new FindRequest(id, description, pageIndex,
+                await EventPublisher.Send(new FindRequest(id,
+                    description,
+                    pageIndex,
                     pageSize));
             return Presenter.GetListResult(Response, result);
         }
@@ -53,7 +55,8 @@ namespace Template.Api.Controllers
         {
             EntityResult<SampleDto> result =
                 await EventPublisher.Send(new InsertRequest(item));
-            return Presenter.GetCreatedResult(result, Request,
+            return Presenter.GetCreatedResult(result,
+                Request,
                 $"{Request.Path.Value}/{item.Id}");
         }
 

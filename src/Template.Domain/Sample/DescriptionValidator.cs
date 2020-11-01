@@ -10,16 +10,18 @@ namespace Template.Domain.Sample
             RuleFor(x => x).NotEmpty().MaximumLength(250);
         }
 
-        protected override bool PreValidate(ValidationContext<string> context, ValidationResult result)
+        protected override bool PreValidate(ValidationContext<string> context,
+            ValidationResult result)
         {
-            if (context.InstanceToValidate == null)
+            if (context.InstanceToValidate != null)
             {
-                result.Errors.Add(new ValidationFailure("",
-                    "Please ensure a model was supplied."));
-                return false;
+                return true;
             }
 
-            return true;
+            result.Errors.Add(new ValidationFailure("",
+                "Please ensure a model was supplied."));
+            return false;
+
         }
     }
 }
