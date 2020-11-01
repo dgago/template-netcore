@@ -32,7 +32,7 @@ namespace Template.Application.Tests.Sample.Find
         public async void FindHandler_Should_Work(string id, string description, int expected,
                                                   int count)
         {
-            // Arange
+            // Given
             IMediator mediator = ServiceProvider.GetService<IMediator>();
 
             MockEventPublisher publisher = new MockEventPublisher(mediator);
@@ -49,10 +49,10 @@ namespace Template.Application.Tests.Sample.Find
 
             FindRequest command = new FindRequest(id, description, 1, 3);
 
-            // Act
+            // When
             QueryResult<SampleDto> result = await handler.Handle(command, new CancellationToken());
 
-            // Asert
+            // Then
             List<ValidationResult> notValidNotifications =
                 result.Notifications.Where(notif => !notif.IsValid).ToList();
 

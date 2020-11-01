@@ -38,7 +38,7 @@ namespace Template.Application.Tests.Sample.Insert
         [InlineData("1", "2", true)]
         public async void InsertHandler_Should_Work(string id, string description, bool expected)
         {
-            // Arange
+            // Given
             IMediator mediator = ServiceProvider.GetService<IMediator>();
 
             MockEventPublisher publisher = new MockEventPublisher(mediator);
@@ -52,10 +52,10 @@ namespace Template.Application.Tests.Sample.Insert
             SampleDto item = new SampleDto {Id = id, Description = description};
             InsertRequest command = new InsertRequest(item);
 
-            // Act
+            // When
             EntityResult<SampleDto> result = await handler.Handle(command, new CancellationToken());
 
-            // Asert
+            // Then
             List<ValidationResult> notValidNotifications =
                 result.Notifications.Where(notif => !notif.IsValid).ToList();
             if (expected)

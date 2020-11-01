@@ -338,9 +338,12 @@ deploykey
 .terraform/
 inventory
 
-#IntelliJ Files
+# IntelliJ Files
 .DS_Store
 .idea
 target/**
 
 **/coverage.opencover.xml
+
+# VSCode Files
+.vscode/

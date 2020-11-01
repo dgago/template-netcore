@@ -30,7 +30,7 @@ namespace Template.Application.Tests.Sample.GetById
         [InlineData("1", true)]
         public async void GetByIdHandler_Should_Work(string id, bool expected)
         {
-            // Arange
+            // Given
             IMediator mediator = ServiceProvider.GetService<IMediator>();
 
             MockEventPublisher publisher = new MockEventPublisher(mediator);
@@ -44,10 +44,10 @@ namespace Template.Application.Tests.Sample.GetById
 
             GetByIdRequest command = new GetByIdRequest(id);
 
-            // Act
+            // When
             Result result = await handler.Handle(command, new CancellationToken());
 
-            // Asert
+            // Then
             List<ValidationResult> notValidNotifications =
                 result.Notifications.Where(notif => !notif.IsValid).ToList();
             if (expected)

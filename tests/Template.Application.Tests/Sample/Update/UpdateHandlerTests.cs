@@ -37,7 +37,7 @@ namespace Template.Application.Tests.Sample.Update
         [InlineData("1", "2", true)]
         public async void UpdateHandler_Should_Work(string id, string description, bool expected)
         {
-            // Arange
+            // Given
             IMediator mediator = ServiceProvider.GetService<IMediator>();
 
             MockEventPublisher publisher = new MockEventPublisher(mediator);
@@ -53,10 +53,10 @@ namespace Template.Application.Tests.Sample.Update
 
             UpdateRequest command = new UpdateRequest(id, description);
 
-            // Act
+            // When
             Result result = await handler.Handle(command, new CancellationToken());
 
-            // Asert
+            // Then
             List<ValidationResult> notValidNotifications =
                 result.Notifications.Where(notif => !notif.IsValid).ToList();
             if (expected)

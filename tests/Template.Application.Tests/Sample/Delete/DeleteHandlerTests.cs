@@ -33,7 +33,7 @@ namespace Template.Application.Tests.Sample.Delete
         [InlineData("1", true)]
         public async void DeleteHandler_Should_Work(string id, bool expected)
         {
-            // Arange
+            // Given
             IMediator mediator = ServiceProvider.GetService<IMediator>();
 
             MockEventPublisher publisher = new MockEventPublisher(mediator);
@@ -48,10 +48,10 @@ namespace Template.Application.Tests.Sample.Delete
 
             DeleteRequest command = new DeleteRequest(id);
 
-            // Act
+            // When
             Result result = await handler.Handle(command, new CancellationToken());
 
-            // Asert
+            // Then
             List<ValidationResult> notValidNotifications =
                 result.Notifications.Where(notif => !notif.IsValid).ToList();
             if (expected)

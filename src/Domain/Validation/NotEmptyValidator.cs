@@ -8,7 +8,7 @@ namespace Domain.Validation
         public NotEmptyValidator()
         {
             RuleFor(x => x)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotNull()
                 .NotEmpty();
         }

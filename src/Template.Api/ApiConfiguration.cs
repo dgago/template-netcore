@@ -20,7 +20,7 @@ namespace Template.Api
         public static IServiceCollection ConfigureMvcServices(
             this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             return services;
         }
 
