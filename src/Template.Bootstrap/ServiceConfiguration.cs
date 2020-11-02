@@ -1,5 +1,6 @@
-﻿using Application.Commands;
-using Application.Repositories;
+﻿using Kit.Application.Handlers;
+using Kit.Application.Logging;
+using Kit.Application.Repositories;
 
 using MediatR;
 
@@ -36,7 +37,9 @@ namespace Template.Bootstrap
             services.AddSingleton<ISampleRepository, MockSampleRepository>()
                 .AddSingleton<ISampleAdapter, MockSampleAdapter>()
                 .AddSingleton<ISampleService, MockSampleService>()
-                .AddSingleton<IUnitOfWork, SampleUnitOfWork>();
+                .AddSingleton<IUnitOfWork, SampleUnitOfWork>()
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+
 
             return services;
         }

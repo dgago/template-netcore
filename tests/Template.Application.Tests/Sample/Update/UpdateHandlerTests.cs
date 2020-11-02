@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-using Application.Models.Result;
-using Application.Repositories;
-
 using FluentValidation.Results;
+
+using Kit.Application.Handlers;
+using Kit.Application.Models.Responses;
+using Kit.Application.Repositories;
 
 using MediatR;
 
@@ -58,16 +59,18 @@ namespace Template.Application.Tests.Sample.Update
 
             // Then
             List<ValidationResult> notValidNotifications =
-                result.Notifications.Where(notif => !notif.IsValid).ToList();
+                result.Notifications.Where(notification => !notification.IsValid).ToList();
             if (expected)
             {
                 Assert.Empty(notValidNotifications);
-                Assert.True(ContainsType(publisher.Notifications, typeof(SampleUpdated)));
+                Assert.True(ContainsType(publisher.Notifications,
+                    typeof(DomainEvent<UpdateRequest>)));
             }
             else
             {
                 Assert.NotEmpty(notValidNotifications);
-                Assert.False(ContainsType(publisher.Notifications, typeof(SampleUpdated)));
+                Assert.False(ContainsType(publisher.Notifications,
+                    typeof(DomainEvent<UpdateRequest>)));
             }
         }
 
@@ -77,7 +80,7 @@ namespace Template.Application.Tests.Sample.Update
         }
 
         protected override void AddServices(IServiceCollection services,
-                                            IConfiguration configuration)
+            IConfiguration configuration)
         {
             Services.ConfigureTemplateServices(configuration);
         }

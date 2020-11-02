@@ -1,30 +1,23 @@
-﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Kit.Application.Handlers;
-
 using MediatR;
 
-namespace Test.Mocks
+namespace Kit.Application.Handlers
 {
-    public class MockEventPublisher : IEventPublisher
+    public class MediatorEventPublisher : IEventPublisher
     {
         private readonly IMediator _mediator;
 
-        public readonly IList<INotification> Notifications;
-
-        public MockEventPublisher(IMediator mediator)
+        public MediatorEventPublisher(IMediator mediator)
         {
             _mediator = mediator;
-            Notifications = new List<INotification>();
         }
 
         public Task PublishAsync<TNotification>(TNotification notification,
             CancellationToken cancellationToken = default)
             where TNotification : INotification
         {
-            Notifications.Add(notification);
             return _mediator.Publish(notification, cancellationToken);
         }
 

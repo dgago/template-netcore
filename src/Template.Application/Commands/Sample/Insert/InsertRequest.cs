@@ -1,4 +1,4 @@
-using Application.Models.Request;
+using Kit.Application.Models.Requests;
 
 namespace Template.Application.Commands.Sample.Insert
 {

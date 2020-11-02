@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-using Api;
-
-using Application.Commands;
-using Application.Models.Result;
+using Kit.Application.Handlers;
+using Kit.Application.Models.Responses;
+using Kit.Presentation;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +32,7 @@ namespace Template.Api.Controllers
             [FromQuery] int pageSize = 3)
         {
             QueryResult<SampleDto> result =
-                await EventPublisher.Send(new FindRequest(id,
+                await EventPublisher.SendAsync(new FindRequest(id,
                     description,
                     pageIndex,
                     pageSize));
@@ -45,7 +44,7 @@ namespace Template.Api.Controllers
         public async Task<IActionResult> Get(string id)
         {
             EntityResult<SampleDto> result =
-                await EventPublisher.Send(new GetByIdRequest(id));
+                await EventPublisher.SendAsync(new GetByIdRequest(id));
             return Presenter.GetOkObjectResult(result);
         }
 
@@ -54,7 +53,7 @@ namespace Template.Api.Controllers
         public async Task<IActionResult> Post([FromBody] SampleDto item)
         {
             EntityResult<SampleDto> result =
-                await EventPublisher.Send(new InsertRequest(item));
+                await EventPublisher.SendAsync(new InsertRequest(item));
             return Presenter.GetCreatedResult(result,
                 Request,
                 $"{Request.Path.Value}/{item.Id}");
@@ -65,7 +64,7 @@ namespace Template.Api.Controllers
         public async Task<IActionResult> Put(string id, [FromBody] SampleDto item)
         {
             Result result =
-                await EventPublisher.Send(new UpdateRequest(id, item.Description));
+                await EventPublisher.SendAsync(new UpdateRequest(id, item.Description));
             return Presenter.GetNoContentResult(result);
         }
 
@@ -73,7 +72,7 @@ namespace Template.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            Result result = await EventPublisher.Send(new DeleteRequest(id));
+            Result result = await EventPublisher.SendAsync(new DeleteRequest(id));
             return Presenter.GetOkResult(result);
         }
     }

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-using Application.Repositories;
+using Kit.Application.Repositories;
 
 namespace Template.Infra
 {

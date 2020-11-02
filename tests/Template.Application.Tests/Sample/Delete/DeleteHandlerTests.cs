@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Threading;
 
-using Application.Models.Result;
-using Application.Repositories;
-
 using FluentValidation.Results;
+
+using Kit.Application.Models.Responses;
+using Kit.Application.Repositories;
 
 using MediatR;
 

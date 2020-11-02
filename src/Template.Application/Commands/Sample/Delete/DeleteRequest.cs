@@ -1,6 +1,5 @@
-﻿using Application.Models.Request;
-
-using Domain.Validation;
+﻿using Kit.Application.Models.Requests;
+using Kit.Domain.Validation;
 
 namespace Template.Application.Commands.Sample.Delete
 {
@@ -10,7 +9,7 @@ namespace Template.Application.Commands.Sample.Delete
         {
             Id = id;
 
-            AddNotifications(new NotEmptyValidator<string>().Validate(id));
+            AddNotifications(id.NotEmpty());
         }
 
         public string Id { get; }

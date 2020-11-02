@@ -1,8 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-using Application.Commands;
-using Application.Models.Result;
+using Kit.Application.Handlers;
+using Kit.Application.Models.Responses;
+using Kit.Domain.Validation;
 
 using Template.Application.Repositories;
 
@@ -18,12 +19,13 @@ namespace Template.Application.Commands.Sample.GetById
             _sampleRepository = sampleRepository;
         }
 
-        public override async Task<EntityResult<SampleDto>> Handle(
-            GetByIdRequest request, CancellationToken cancellationToken)
+        protected override async Task<EntityResult<SampleDto>> HandleRequest(
+            GetByIdRequest request,
+            CancellationToken cancellationToken)
         {
             Domain.Sample.Sample item = await _sampleRepository.GetByIdAsync(request.Id);
 
-            request.AddNotifications(Exists(item));
+            request.AddNotifications(item.Exists());
 
             return !request.IsValid
                 ? new EntityResult<SampleDto>(request.Notifications, null)

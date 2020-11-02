@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading;
 
-using Application.Models.Result;
-
 using FluentValidation.Results;
+
+using Kit.Application.Models.Responses;
 
 using MediatR;
 

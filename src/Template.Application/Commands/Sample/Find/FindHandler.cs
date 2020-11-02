@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Application.Commands;
-using Application.Models.Result;
+using Kit.Application.Handlers;
+using Kit.Application.Models.Responses;
 
 using Template.Application.Repositories;
 
@@ -20,7 +20,7 @@ namespace Template.Application.Commands.Sample.Find
             _sampleRepository = sampleRepository;
         }
 
-        public override async Task<QueryResult<SampleDto>> Handle(
+        protected override async Task<QueryResult<SampleDto>> HandleRequest(
             FindRequest request, CancellationToken cancellationToken)
         {
             (IEnumerable<SampleDto> items, long count) =

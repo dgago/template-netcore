@@ -1,7 +1,7 @@
-using Domain;
-using Domain.Validation;
-
 using FluentValidation.Results;
+
+using Kit.Domain;
+using Kit.Domain.Validation;
 
 namespace Template.Domain.Sample
 {
@@ -9,9 +9,8 @@ namespace Template.Domain.Sample
     {
         public Sample(string id, string description)
         {
-            // TODO: cómo validar acá? Ideas: tener un miembro público IsValid y una coleccion de Notif
-            Notifications.Add(new NotEmptyValidator<string>().Validate(id));
-            Notifications.Add(new DescriptionValidator().Validate(description));
+            Notifications.Add(id.NotEmpty());
+            Notifications.Add(description.IsValidDescription());
 
             if (IsValid)
             {
@@ -26,14 +25,8 @@ namespace Template.Domain.Sample
 
         public ValidationResult ChangeDescription(string description)
         {
-            ValidationResult res = new DescriptionValidator().Validate(description);
-
-            if (res.IsValid)
-            {
-                Description = description;
-            }
-
-            return res;
+            return description
+                .IsValidDescription(() => Description = description);
         }
     }
 }
