@@ -13,6 +13,7 @@ using MediatR;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -49,8 +50,10 @@ namespace Template.Application.Tests.Sample.Update
                 });
             Mock<IUnitOfWork> uow = new Mock<IUnitOfWork>();
             MockSampleAdapter adapter = new MockSampleAdapter();
+            Mock<ILogger<UpdateRequest>> logger = new Mock<ILogger<UpdateRequest>>();
 
-            UpdateHandler handler = new UpdateHandler(publisher, repository, uow.Object, adapter);
+            UpdateHandler handler =
+                new UpdateHandler(publisher, repository, uow.Object, adapter, logger.Object);
 
             UpdateRequest command = new UpdateRequest(id, description);
 

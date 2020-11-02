@@ -10,6 +10,9 @@ using MediatR;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+using Moq;
 
 using Template.Application.Commands.Sample;
 using Template.Application.Commands.Sample.Find;
@@ -29,8 +32,10 @@ namespace Template.Application.Tests.Sample.Find
         [InlineData(null, null, 3, 4)]
         [InlineData("", "", 3, 4)]
         [InlineData("1", "", 1, 1)]
-        public async void FindHandler_Should_Work(string id, string description, int expected,
-                                                  int count)
+        public async void FindHandler_Should_Work(string id,
+            string description,
+            int expected,
+            int count)
         {
             // Given
             IMediator mediator = ServiceProvider.GetService<IMediator>();
@@ -44,8 +49,9 @@ namespace Template.Application.Tests.Sample.Find
                     {"3", new Domain.Sample.Sample("3", "3")},
                     {"4", new Domain.Sample.Sample("4", "4")}
                 });
+            Mock<ILogger<FindRequest>> logger = new Mock<ILogger<FindRequest>>();
 
-            FindHandler handler = new FindHandler(repository, publisher);
+            FindHandler handler = new FindHandler(repository, publisher, logger.Object);
 
             FindRequest command = new FindRequest(id, description, 1, 3);
 
@@ -54,7 +60,7 @@ namespace Template.Application.Tests.Sample.Find
 
             // Then
             List<ValidationResult> notValidNotifications =
-                result.Notifications.Where(notif => !notif.IsValid).ToList();
+                result.Notifications.Where(notification => !notification.IsValid).ToList();
 
             Assert.Empty(notValidNotifications);
             Assert.Equal(expected, result.Items.Count());
@@ -62,7 +68,7 @@ namespace Template.Application.Tests.Sample.Find
         }
 
         protected override void AddServices(IServiceCollection services,
-                                            IConfiguration configuration)
+            IConfiguration configuration)
         {
             Services.ConfigureTemplateServices(configuration);
         }

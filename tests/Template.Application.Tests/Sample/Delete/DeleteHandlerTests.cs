@@ -11,6 +11,7 @@ using MediatR;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -43,8 +44,10 @@ namespace Template.Application.Tests.Sample.Delete
                     {"1", new Domain.Sample.Sample("1", "1")}
                 });
             Mock<IUnitOfWork> uow = new Mock<IUnitOfWork>();
+            Mock<ILogger<DeleteRequest>> logger = new Mock<ILogger<DeleteRequest>>();
 
-            DeleteHandler handler = new DeleteHandler(publisher, repository, uow.Object);
+            DeleteHandler handler =
+                new DeleteHandler(publisher, repository, uow.Object, logger.Object);
 
             DeleteRequest command = new DeleteRequest(id);
 
@@ -53,7 +56,7 @@ namespace Template.Application.Tests.Sample.Delete
 
             // Then
             List<ValidationResult> notValidNotifications =
-                result.Notifications.Where(notif => !notif.IsValid).ToList();
+                result.Notifications.Where(notification => !notification.IsValid).ToList();
             if (expected)
             {
                 Assert.Empty(notValidNotifications);

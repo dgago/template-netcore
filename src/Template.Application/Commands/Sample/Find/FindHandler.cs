@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Kit.Application.Handlers;
 using Kit.Application.Models.Responses;
 
+using Microsoft.Extensions.Logging;
+
 using Template.Application.Repositories;
 
 namespace Template.Application.Commands.Sample.Find
@@ -14,20 +16,22 @@ namespace Template.Application.Commands.Sample.Find
     {
         private readonly ISampleRepository _sampleRepository;
 
-        public FindHandler(ISampleRepository sampleRepository, IEventPublisher eventPublisher) :
-            base(eventPublisher)
+        public FindHandler(ISampleRepository sampleRepository,
+            IEventPublisher eventPublisher,
+            ILogger<FindRequest> logger) : base(eventPublisher, logger)
         {
             _sampleRepository = sampleRepository;
         }
 
         protected override async Task<QueryResult<SampleDto>> HandleRequest(
-            FindRequest request, CancellationToken cancellationToken)
+            FindRequest request,
+            CancellationToken cancellationToken)
         {
             (IEnumerable<SampleDto> items, long count) =
                 await _sampleRepository.FindAsync(request.Id,
-                                                  request.Description,
-                                                  request.PageIndex,
-                                                  request.PageSize);
+                    request.Description,
+                    request.PageIndex,
+                    request.PageSize);
 
             return new QueryResult<SampleDto>(request.Notifications, items, count);
         }

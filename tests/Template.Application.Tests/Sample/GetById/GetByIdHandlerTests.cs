@@ -10,6 +10,9 @@ using MediatR;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+using Moq;
 
 using Template.Application.Commands.Sample.GetById;
 using Template.Bootstrap;
@@ -39,8 +42,9 @@ namespace Template.Application.Tests.Sample.GetById
                 {
                     {"1", new Domain.Sample.Sample("1", "1")}
                 });
+            Mock<ILogger<GetByIdRequest>> logger = new Mock<ILogger<GetByIdRequest>>();
 
-            GetByIdHandler handler = new GetByIdHandler(repository, publisher);
+            GetByIdHandler handler = new GetByIdHandler(repository, publisher, logger.Object);
 
             GetByIdRequest command = new GetByIdRequest(id);
 
@@ -49,7 +53,7 @@ namespace Template.Application.Tests.Sample.GetById
 
             // Then
             List<ValidationResult> notValidNotifications =
-                result.Notifications.Where(notif => !notif.IsValid).ToList();
+                result.Notifications.Where(notification => !notification.IsValid).ToList();
             if (expected)
             {
                 Assert.Empty(notValidNotifications);

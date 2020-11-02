@@ -6,6 +6,8 @@ using Kit.Application.Models.Responses;
 using Kit.Application.Repositories;
 using Kit.Domain.Validation;
 
+using Microsoft.Extensions.Logging;
+
 using Template.Application.Repositories;
 using Template.Application.Services;
 
@@ -20,7 +22,8 @@ namespace Template.Application.Commands.Sample.Insert
         public InsertHandler(IEventPublisher eventPublisher,
             ISampleRepository sampleRepository,
             IUnitOfWork unitOfWork,
-            ISampleService sampleService) : base(eventPublisher)
+            ISampleService sampleService,
+            ILogger<InsertRequest> logger) : base(eventPublisher, logger)
         {
             _sampleRepository = sampleRepository;
             _unitOfWork = unitOfWork;

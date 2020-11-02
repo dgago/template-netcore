@@ -6,6 +6,8 @@ using Kit.Application.Models.Responses;
 using Kit.Application.Repositories;
 using Kit.Domain.Validation;
 
+using Microsoft.Extensions.Logging;
+
 using Template.Application.Adapters;
 using Template.Application.Repositories;
 
@@ -20,8 +22,8 @@ namespace Template.Application.Commands.Sample.Update
         public UpdateHandler(IEventPublisher eventPublisher,
             ISampleRepository sampleRepository,
             IUnitOfWork unitOfWork,
-            ISampleAdapter sampleAdapter) : base(
-            eventPublisher)
+            ISampleAdapter sampleAdapter,
+            ILogger<UpdateRequest> logger) : base(eventPublisher, logger)
         {
             _sampleRepository = sampleRepository;
             _unitOfWork = unitOfWork;

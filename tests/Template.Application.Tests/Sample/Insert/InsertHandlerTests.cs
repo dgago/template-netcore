@@ -13,6 +13,7 @@ using MediatR;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Moq;
 
@@ -47,8 +48,10 @@ namespace Template.Application.Tests.Sample.Insert
                 new MockSampleRepository(new Dictionary<string, Domain.Sample.Sample>());
             Mock<IUnitOfWork> uow = new Mock<IUnitOfWork>();
             MockSampleService service = new MockSampleService();
+            Mock<ILogger<InsertRequest>> logger = new Mock<ILogger<InsertRequest>>();
 
-            InsertHandler handler = new InsertHandler(publisher, repository, uow.Object, service);
+            InsertHandler handler =
+                new InsertHandler(publisher, repository, uow.Object, service, logger.Object);
 
             SampleDto item = new SampleDto {Id = id, Description = description};
             InsertRequest command = new InsertRequest(item);

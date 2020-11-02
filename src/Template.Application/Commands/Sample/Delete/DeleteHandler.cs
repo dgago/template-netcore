@@ -6,6 +6,8 @@ using Kit.Application.Models.Responses;
 using Kit.Application.Repositories;
 using Kit.Domain.Validation;
 
+using Microsoft.Extensions.Logging;
+
 using Template.Application.Repositories;
 
 namespace Template.Application.Commands.Sample.Delete
@@ -17,7 +19,8 @@ namespace Template.Application.Commands.Sample.Delete
 
         public DeleteHandler(IEventPublisher eventPublisher,
             ISampleRepository sampleRepository,
-            IUnitOfWork unitOfWork) : base(eventPublisher)
+            IUnitOfWork unitOfWork,
+            ILogger<DeleteRequest> logger) : base(eventPublisher, logger)
         {
             _sampleRepository = sampleRepository;
             _unitOfWork = unitOfWork;

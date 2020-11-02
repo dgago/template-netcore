@@ -5,6 +5,8 @@ using Kit.Application.Handlers;
 using Kit.Application.Models.Responses;
 using Kit.Domain.Validation;
 
+using Microsoft.Extensions.Logging;
+
 using Template.Application.Repositories;
 
 namespace Template.Application.Commands.Sample.GetById
@@ -13,8 +15,9 @@ namespace Template.Application.Commands.Sample.GetById
     {
         private readonly ISampleRepository _sampleRepository;
 
-        public GetByIdHandler(ISampleRepository sampleRepository, IEventPublisher eventPublisher) :
-            base(eventPublisher)
+        public GetByIdHandler(ISampleRepository sampleRepository,
+            IEventPublisher eventPublisher,
+            ILogger<GetByIdRequest> logger) : base(eventPublisher, logger)
         {
             _sampleRepository = sampleRepository;
         }
