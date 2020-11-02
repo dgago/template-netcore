@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Kit.Presentation\Kit.Presentation.csproj" />
       <ProjectReference Include="..\Template.Application\Template.Application.csproj" />
       <ProjectReference Include="..\Template.Bootstrap\Template.Bootstrap.csproj" />
     </ItemGroup>
